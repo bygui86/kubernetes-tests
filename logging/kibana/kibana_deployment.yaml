@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: logging
+  labels:
+    component: kibana
+    group: logging
+    # version: 6.5.4
+    version: 7.0.1
+spec:
+  selector:
+    matchLabels:
+      component: kibana
+      group: logging
+      # version: 6.5.4
+      version: 7.0.1
+  template:
+    metadata:
+      labels:
+        component: kibana
+        group: logging
+        # version: 6.5.4
+        version: 7.0.1
+    spec:
+      containers:
+        - name: kibana
+          # image: docker.elastic.co/kibana/kibana:6.5.4
+          image: docker.elastic.co/kibana/kibana:7.0.1
+          env:
+            - name: ELASTICSEARCH_URL
+              value: http://elasticsearch:9200
+            - name: XPACK_SECURITY_ENABLED
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 5601
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi

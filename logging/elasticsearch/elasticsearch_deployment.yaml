@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: logging
+  labels:
+    component: elasticsearch
+    group: logging
+    # version: 6.5.4
+    version: 7.0.1
+spec:
+  selector:
+    matchLabels:
+      component: elasticsearch
+      group: logging
+      # version: 6.5.4
+      version: 7.0.1
+  template:
+    metadata:
+      labels:
+        component: elasticsearch
+        group: logging
+        # version: 6.5.4
+        version: 7.0.1
+    spec:
+      containers:
+        - name: elasticsearch
+          # image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+          env:
+            - name: discovery.type
+              value: single-node
+          ports:
+            - name: http
+              containerPort: 9200
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 2Gi
