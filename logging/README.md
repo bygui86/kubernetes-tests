@@ -2,10 +2,11 @@
 
 ## Instructions
 
+### Manual
+
 1. Deploy
 	```shell
 	kubectl create namespace logging
-
 	kubectl apply -f elasticsearch/elasticsearch_deployment.yaml
 	kubectl apply -f elasticsearch/elasticsearch_service.yaml
 	kubectl apply -f kibana/kibana_deployment.yaml
@@ -47,9 +48,30 @@
 4. Back to Kibana
 	Left menu: "Discover" to see logs
 
+### Operator
+
+1. Deploy
+	1. Add helm charts repository
+	```shell
+	helm repo add akomljen-charts https://raw.githubusercontent.com/komljen/helm-charts/master/charts/
+	```
+	2. Install Elasticsearch Operator
+	```shell
+	helm install --name elasticsearch \
+		--namespace logging \
+		akomljen-charts/elasticsearch-operator
+	```
+	3. Install EFK Stack for getting logs from containers and visualise in Kibana
+	```shell
+	helm install --name efk \
+		--namespace logging \
+		akomljen-charts/efk
+	```
+
 ---
 
 ## Links
 
-[tutorial](https://mherman.org/blog/logging-in-kubernetes-with-elasticsearch-Kibana-fluentd/)
+[tutorial-logging](https://mherman.org/blog/logging-in-kubernetes-with-elasticsearch-Kibana-fluentd/)
 [fluentd-official](https://docs.fluentd.org/v/0.12/articles/kubernetes-fluentd)
+[tutorial-monitoring-loggin](https://medium.com/deepaksood619/ultimate-kubernetes-infrastructure-monitoring-metrics-logs-c7b871d797bd)
