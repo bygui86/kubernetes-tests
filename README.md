@@ -38,16 +38,19 @@ Pool of simple applications to enhance testing of Kubernetes various aspects
 ## Kubernetes aspects
 
 - [x] logging > EFK (elasticsearch, fluentd, kibana)
-	- [x] manifests
+	- [x] manifests / operator
 	- [ ] auto-config
 - [ ] monitoring > Prometheus, Grafana
-	- [ ] manifests
+	- [x] manifests / operator
 	- [ ] auto-config
+	- [ ] influxdb as prometheus db
+	- [x] prometheus-node-exporter
+	- [ ] prometheus-postgres-exporter
 - [ ] tracing > Jaeger
-	- [ ] manifests
+	- [ ] manifests / operator
 	- [ ] auto-config
 - [ ] mapping > Kiali
-	- [ ] manifests
+	- [ ] manifests / operator
 	- [ ] auto-config
 - [ ] ci/cd > JenkinsX, Prow, Tekton
 	- [ ] manifests
