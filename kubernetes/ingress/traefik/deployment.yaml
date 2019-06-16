@@ -1,0 +1,45 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: traefik-ingress-external
+  namespace: kube-system
+  labels:
+    k8s-app: traefik-ingress-external
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-external
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-external
+        name: traefik-ingress-external
+    spec:
+      serviceAccountName: traefik-ingress
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: traefik
+        name: traefik-ingress-external
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /certs
+          name: certificates
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: admin
+          containerPort: 8080
+        args:
+        - --configfile=/config/traefik.toml
+        ## Do not pass additional flags to args such -api , -ping , or -kubernetes because that will override the configuration in config file.
+      volumes:
+      - name: config
+        configMap:
+          name: traefik-conf-external
+      - name: certificates
+        configMap:
+          name: traefik-ssl-certificates
