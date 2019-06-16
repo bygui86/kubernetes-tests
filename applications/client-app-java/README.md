@@ -9,11 +9,11 @@
 - [x] Swagger
 - [x] Docker multistage
 - [ ] Kubernetes
+	- [ ] manifests
 	- [ ] implementation
 		- [ ] service-discovery
 		- [ ] configmap
 		- [ ] secrets
-	- [ ] manifests
 
 ---
 
@@ -27,15 +27,15 @@
 
 ## Build
 
-### Multistage
-```bash
-docker build . -t client-app-java:latest
-```
-
 ### Classic
 ```bash
 mvnw clean package
-docker build . -f Dockerfile_classic -t client-app-java:latest
+docker build . -t client-app-java:latest
+```
+
+### Multistage
+```bash
+docker build . -f Dockerfile_multistage -t client-app-java:latest
 ```
 
 ## Run

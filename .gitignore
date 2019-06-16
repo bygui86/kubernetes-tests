@@ -52,25 +52,6 @@ RemoteSystemsTempFiles/
 
 ########### Visual Studio Code
 *.code-workspace
+.vscode
 
-
-
-###################### Build automation tools ###
-
-.gradle/
-.m2/
-
-
-
-###################### Compiler #################
-
-bin/
-build/
-target/
-*.class
-
-
-
-###################### Proejct-Specific #########
-
-testing/xml/*.xml
+########### GoLand

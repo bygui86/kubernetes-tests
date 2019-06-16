@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -49,6 +50,7 @@ public class User extends Auditable {
 	@Column
 	int age;
 
+	@Transient
 	String errorMessage;
 
 }

@@ -1,0 +1,22 @@
+
+###################### GoLang ###################
+
+########### Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+########### Test binaries
+*.test
+
+########### Go coverage tool output (LiteIDE)
+*.out
+
+########### Vendor
+vendor/*
+!vendor/.gitkeep
+
+########### Project specific
+client-app-go
