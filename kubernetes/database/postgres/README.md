@@ -1,7 +1,9 @@
 
-# Kubernetes databases - PostgreSQL operator
+# Kubernetes databases - PostgreSQL
 
 ## Instructions
+
+### Zalando operator
 
 1. Start minikube
 	```shell
@@ -21,9 +23,9 @@
 3. Deploy operator
 	* Manually
 		```shell
-		kubectl create -f manifests/configmap.yaml
-		kubectl create -f manifests/operator-service-account-rbac.yaml
-		kubectl create -f manifests/postgres-operator.yaml
+		kubectl apply -f manifests/configmap.yaml
+		kubectl apply -f manifests/operator-service-account-rbac.yaml
+		kubectl apply -f manifests/postgres-operator.yaml
 		kubectl get pod -l name=postgres-operator -w
 		```
 	* Helm
@@ -35,7 +37,7 @@
 
 4. Spin up Postgres
 	```shell
-	kubectl create -f manifests/minimal-postgres-manifest.yaml
+	kubectl apply -f manifests/minimal-postgres-manifest.yaml
 	```
 
 5. Check
@@ -59,6 +61,10 @@
 	echo "Postgres USERNAME: " $(kubectl get secret postgres.acid-minimal-cluster.credentials -o 'jsonpath={.data.username}' | base64 -D)
 	echo "Postgres PASSWORD: " $(kubectl get secret postgres.acid-minimal-cluster.credentials -o 'jsonpath={.data.password}' | base64 -D)
 	```
+
+### CrunchyData operator
+
+`TODO`
 
 ---
 

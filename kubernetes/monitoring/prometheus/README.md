@@ -1,4 +1,4 @@
-# Kubernetes tests monitoring
+# Kubernetes monitoring - Prometheus
 
 ## Instructions
 
@@ -21,8 +21,12 @@
 	kubectl port-forward svc/prometheus-prometheus-oper-prometheus 9090:9090 -n monitoring
 	```
 
+### Manual
+
+`TODO`
+
 ---
 
 ## Links
-
-[tutorial](https://medium.com/deepaksood619/ultimate-kubernetes-infrastructure-monitoring-metrics-logs-c7b871d797bd)
+* [prometheus-opeartor](https://medium.com/deepaksood619/ultimate-kubernetes-infrastructure-monitoring-metrics-logs-c7b871d797bd)
+* [manual-install](https://vadosware.io/post/better-k8s-monitoring-part-1-adding-prometheus/)
