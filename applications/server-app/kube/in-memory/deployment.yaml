@@ -37,8 +37,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: server-app
-            - secretRef:
-                name: server-app
           ports:
             - name: http
               containerPort: 8080

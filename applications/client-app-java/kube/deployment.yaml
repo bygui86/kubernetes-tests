@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-app
+  name: client-app-java
   namespace: default
   labels:
-    app: server-app
+    app: client-app-java
     group: sample
     version: 0.0.1
 spec:
@@ -16,29 +16,29 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: server-app
+      app: client-app-java
       group: sample
       version: 0.0.1
   template:
     metadata:
       labels:
-        app: server-app
+        app: client-app-java
         group: sample
         version: 0.0.1
     spec:
       restartPolicy: Always
       containers:
-        - name: server-app
-          image: server-app:latest
+        - name: client-app-java
+          image: client-app-java:latest
           # Kubernetes
           # imagePullPolicy: Always
           # Minikube
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: server-app
-            - secretRef:
-                name: server-app
+                name: client-app-java
+            # - secretRef:
+            #     name: client-app-java
           ports:
             - name: http
               containerPort: 8080

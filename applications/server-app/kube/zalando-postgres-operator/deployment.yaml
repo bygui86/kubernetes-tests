@@ -38,7 +38,7 @@ spec:
             - configMapRef:
                 name: server-app
             - secretRef:
-                name: server-app
+                name: postgres.acid-minimal-cluster.credentials
           ports:
             - name: http
               containerPort: 8080
