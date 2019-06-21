@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-postgresql-headless
+  labels:
+    app: postgresql
+    release: server
+    chart: postgresql-3.14.0
+    heritage: Tiller
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: postgresql
+    release: server
+  ports:
+    - name: postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: postgresql

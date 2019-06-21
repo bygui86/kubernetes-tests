@@ -3,7 +3,25 @@
 
 ## Instructions
 
-### Zalando operator
+### Stand-alone
+
+1. Start minikube
+	```shell
+	minikube start \
+		--profile postgres \
+		--vm-driver hyperkit --cpus 4 --memory 12288 \
+		--enable-default-cni --network-plugin=cni \
+		--extra-config=apiserver.authorization-mode=RBAC
+	```
+
+2. Deploy
+	```shell
+	helm install --name server -f values.yaml stable/postgresql
+	```
+
+### Operator
+
+#### Zalando
 
 1. Start minikube
 	```shell
@@ -62,9 +80,17 @@
 	echo "Postgres PASSWORD: " $(kubectl get secret postgres.acid-minimal-cluster.credentials -o 'jsonpath={.data.password}' | base64 -D)
 	```
 
-### CrunchyData operator
+`WARN: Kubernetes service manifests are not 100% correct. Moreover they are compliant with Istio (in some service definitions miss the 'selector' field)`
+7. Fix service definition
+	```shell
+	kubectl apply -f postgres-operator-svc.yaml
+	```
+
+
+#### CrunchyData
 
 `TODO`
+`INFO: Seems to be more complicated than Zalando one`
 
 ---
 
