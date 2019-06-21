@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-app-mysql
+  namespace: default
+  labels:
+    app: server-app-mysql
+    group: sample
+data:
+  SPRING_PROFILES_ACTIVE: "kube"
+  HEAP_SIZE: "256m"
+  META_SIZE: "300m"
+  MYSQL_SCHEMA: "server-app"
+  SERVER_TRACING_PROBABILITY: "1.0"

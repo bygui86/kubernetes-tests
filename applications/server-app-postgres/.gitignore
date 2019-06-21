@@ -1,0 +1,14 @@
+
+###################### Java #####################
+
+########### Build automation tools
+
+.gradle/
+.m2/
+
+########### Compiler
+
+bin/
+build/
+target/
+*.class

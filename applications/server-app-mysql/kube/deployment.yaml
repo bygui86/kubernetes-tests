@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-app-java
+  name: server-app-mysql
   namespace: default
   labels:
-    app: client-app-java
+    app: server-app-mysql
     group: sample
     version: 0.0.1
 spec:
@@ -16,29 +16,31 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: client-app-java
+      app: server-app-mysql
       group: sample
       version: 0.0.1
   template:
     metadata:
       labels:
-        app: client-app-java
+        app: server-app-mysql
         group: sample
         version: 0.0.1
     spec:
       restartPolicy: Always
       containers:
-        - name: client-app-java
-          image: client-app-java:latest
+        - name: server-app-mysql
+          image: server-app-mysql:latest
           # Kubernetes
           # imagePullPolicy: Always
           # Minikube
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: client-app-java
+                name: server-app-mysql
             - secretRef:
-                name: client-app-java
+                name: server-app-mysql
+            - secretRef:
+                name: server-mysql
           ports:
             - name: http
               containerPort: 8080

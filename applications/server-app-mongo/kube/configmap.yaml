@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-app-mongo
+  namespace: default
+  labels:
+    app: server-app-mongo
+    group: sample
+data:
+  SPRING_PROFILES_ACTIVE: "kube"
+  HEAP_SIZE: "256m"
+  META_SIZE: "300m"
+  MONGO_DB: "server-app"
+  SERVER_TRACING_PROBABILITY: "1.0"

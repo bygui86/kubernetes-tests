@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-app-java
+  namespace: default
+  labels:
+    app: client-app-java
+    group: sample
+data:
+  SPRING_PROFILES_ACTIVE: "kube"
+  HEAP_SIZE: "256m"
+  META_SIZE: "300m"
+  DB_TYPE: "mysql"
+  CLIENTJAVA_TRACING_PROBABILITY: "1.0"

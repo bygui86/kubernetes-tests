@@ -1,0 +1,16 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: server-app-mongo
+  namespace: default
+  labels:
+    app: server-app-mongo
+    group: sample
+spec:
+  minReplicas: 1
+  maxReplicas: 3
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: server-app-mongo
+  targetCPUUtilizationPercentage: 75

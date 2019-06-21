@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-app-postgres
+  namespace: default
+  labels:
+    app: server-app-postgres
+    group: sample
+data:
+  SPRING_PROFILES_ACTIVE: "kube-single"
+  HEAP_SIZE: "256m"
+  META_SIZE: "300m"
+  POSTGRESQL_SCHEMA: "server-app"
+  SERVER_TRACING_PROBABILITY: "1.0"
