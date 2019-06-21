@@ -13,8 +13,7 @@
 
 2. Download Istio
   ```shell
-  ISTIO_VERSION=1.1.6
-  # ISTIO_VERSION=1.1.8
+  ISTIO_VERSION=1.1.8
   curl -L https://git.io/getLatestIstio | ISTIO_VERSION=$ISTIO_VERSION sh -
   cd istio-$ISTIO_VERSION
   ```
@@ -40,7 +39,7 @@
     kubectl delete meshpolicies.authentication.istio.io default
     kubectl delete destinationrules.networking.istio.io istio-client-mtls
     ```
-  2. Revrite liveness check
+  2. Re-write liveness check
     ```shell
     kubectl get cm istio-sidecar-injector -n istio-system -o yaml | sed -e "s/ rewriteAppHTTPProbe: false/ rewriteAppHTTPProbe: true/" | kubectl apply -f -
     ```
@@ -48,12 +47,4 @@
 ---
 
 ## Links
-* istio
-  * https://istio.io/docs/setup/kubernetes/install/kubernetes/
-* postgres
-  * Zalando
-    * https://postgres-operator.readthedocs.io/en/latest/quickstart/
-    * https://github.com/zalando/postgres-operator
-  * CrunchyData
-    * https://github.com/CrunchyData/postgres-operator
-    * https://access.crunchydata.com/documentation/postgres-operator/4.0.0/installation/operator-install/
+* https://istio.io/docs/setup/kubernetes/install/kubernetes/
