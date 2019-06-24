@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-app-go
+  namespace: default
+  labels:
+    app: client-app-go
+    group: sample
+    version: 0.0.1
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: client-app-go
+      group: sample
+      version: 0.0.1
+  template:
+    metadata:
+      labels:
+        app: client-app-go
+        group: sample
+        version: 0.0.1
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: client-app-go
+          image: client-app-go:latest
+          # Kubernetes
+          # imagePullPolicy: Always
+          # Minikube
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: client-app-go
+            - secretRef:
+                name: client-app-go
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: http-metrics
+              containerPort: 8090
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            exec:
+              command:
+                - /usr/bin/health-check.sh
+                - localhost
+                # - client-app-go
+                - "8090"
+                - live
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - /usr/bin/health-check.sh
+                - localhost
+                # - client-app-go
+                - "8090"
+                - ready
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+      terminationGracePeriodSeconds: 30
