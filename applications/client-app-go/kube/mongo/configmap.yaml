@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-app-go
+  namespace: default
+  labels:
+    app: client-app-go
+    group: sample
+data:
+  CLIENTGO_REST_SERVER_APP_HOST: "server-app-mongo"

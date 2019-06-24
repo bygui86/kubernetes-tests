@@ -78,6 +78,23 @@
 
 ---
 
+## Versions
+
+### 0.0.1
+- [x] rest apis
+- [x] kubernetes probes
+- [x] go structure
+- [x] expose logs
+
+### 0.0.2 - `TODO`
+- [ ] expose metrics
+- [ ] expose tracing
+
+### 0.0.3 - `TODO`
+- [ ] use kustomize for kube manifests
+
+---
+
 ## Links
 
 * [Tutorial](https://semaphoreci.com/community/tutorials/building-and-testing-a-rest-api-in-go-with-gorilla-mux-and-postgresql)
