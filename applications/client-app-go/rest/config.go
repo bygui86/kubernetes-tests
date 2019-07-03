@@ -9,23 +9,23 @@ import (
 
 const (
 	// Environment variables -
-	restHostEnvVar                  = "CLIENTGO_REST_HOST"
-	restPortEnvVar                  = "CLIENTGO_REST_PORT"
-	restServerShutdownTimeoutEnvVar = "CLIENTGO_REST_SHUTDOWN_TIMEOUT"
-	restServerAppProtocolEnvVar     = "CLIENTGO_REST_SERVER_APP_PROTOCOL"
-	restServerAppHostEnvVar         = "CLIENTGO_REST_SERVER_APP_HOST"
-	restServerAppPortEnvVar         = "CLIENTGO_REST_SERVER_APP_PORT"
-	restServerAppUrlRootEnvVar      = "CLIENTGO_REST_SERVER_APP_URL_ROOT"
+	restHostEnvVar              = "CLIENTGO_REST_HOST"
+	restPortEnvVar              = "CLIENTGO_REST_PORT"
+	restShutdownTimeoutEnvVar   = "CLIENTGO_REST_SHUTDOWN_TIMEOUT"
+	restServerAppProtocolEnvVar = "CLIENTGO_REST_SERVER_APP_PROTOCOL"
+	restServerAppHostEnvVar     = "CLIENTGO_REST_SERVER_APP_HOST"
+	restServerAppPortEnvVar     = "CLIENTGO_REST_SERVER_APP_PORT"
+	restServerAppUrlRootEnvVar  = "CLIENTGO_REST_SERVER_APP_URL_ROOT"
 
 	// Default values -
 	// host values: '0.0.0.0' for kubernetes, 'localhost' for local
-	restHostDefault                  = "0.0.0.0"
-	restPortDefault                  = 8080
-	restServerShutdownTimeoutDefault = 15
-	restServerAppProtocolDefault     = "http"
-	restServerAppHostDefault         = "server-app"
-	restServerAppPortDefault         = 8080
-	restServerAppUrlRootDefault      = "users"
+	restHostDefault              = "0.0.0.0"
+	restPortDefault              = 8080
+	restShutdownTimeoutDefault   = 15
+	restServerAppProtocolDefault = "http"
+	restServerAppHostDefault     = "server-app"
+	restServerAppPortDefault     = 8080
+	restServerAppUrlRootDefault  = "users"
 )
 
 // Config -
@@ -58,7 +58,7 @@ func newConfig() (*Config, error) {
 	return &Config{
 		RestHost:        utils.GetStringEnv(restHostEnvVar, restHostDefault),
 		RestPort:        utils.GetIntEnv(restPortEnvVar, restPortDefault),
-		ShutdownTimeout: utils.GetIntEnv(restServerShutdownTimeoutEnvVar, restServerShutdownTimeoutDefault),
+		ShutdownTimeout: utils.GetIntEnv(restShutdownTimeoutEnvVar, restShutdownTimeoutDefault),
 		ServerAppConfig: &ServerAppConfig{
 			Protocol: protocol,
 			Host:     host,

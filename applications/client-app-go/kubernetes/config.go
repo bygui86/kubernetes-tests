@@ -7,15 +7,15 @@ import (
 
 const (
 	// Environment variables -
-	kubeHostEnvVar                  = "CLIENTGO_KUBE_HOST"
-	kubePortEnvVar                  = "CLIENTGO_KUBE_PORT"
-	kubeServerShutdownTimeoutEnvVar = "CLIENTGO_KUBE_SHUTDOWN_TIMEOUT"
+	kubeHostEnvVar            = "CLIENTGO_KUBE_HOST"
+	kubePortEnvVar            = "CLIENTGO_KUBE_PORT"
+	kubeShutdownTimeoutEnvVar = "CLIENTGO_KUBE_SHUTDOWN_TIMEOUT"
 
 	// Default values -
 	// host values: '0.0.0.0' for kubernetes, 'localhost' for local
-	kubeHostDefault           = "0.0.0.0"
-	kubePortDefault           = 8090
-	kubeServerShutdownTimeout = 15
+	kubeHostDefault     = "0.0.0.0"
+	kubePortDefault     = 8090
+	kubeShutdownTimeout = 15
 )
 
 // Config -
@@ -33,6 +33,6 @@ func newConfig() (*Config, error) {
 	return &Config{
 		RestHost:        utils.GetStringEnv(kubeHostEnvVar, kubeHostDefault),
 		RestPort:        utils.GetIntEnv(kubePortEnvVar, kubePortDefault),
-		ShutdownTimeout: utils.GetIntEnv(kubeServerShutdownTimeoutEnvVar, kubeServerShutdownTimeout),
+		ShutdownTimeout: utils.GetIntEnv(kubeShutdownTimeoutEnvVar, kubeShutdownTimeout),
 	}, nil
 }
