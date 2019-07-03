@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gemini-server
+  namespace: default
+  labels:
+    app: gemini-server
+    group: sample
+    version: 0.0.1
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: gemini-server
+      group: sample
+      version: 0.0.1
+  template:
+    metadata:
+      labels:
+        app: gemini-server
+        group: sample
+        version: 0.0.1
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: server-app-postgres
+          image: server-app-postgres:latest
+          # Kubernetes
+          # imagePullPolicy: Always
+          # Minikube
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: server-app-postgres
+            - secretRef:
+                name: server-app-postgres
+            - secretRef:
+                name: postgres.acid-minimal-cluster.credentials
+          ports:
+            - name: http-app
+              containerPort: 8080
+            - name: http-app-mtr
+              containerPort: 8090
+          resources:
+            limits:
+              cpu: 750m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+        - name: echo-server
+          image: echo-server:latest
+          # Kubernetes
+          # imagePullPolicy: Always
+          # Minikube
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: echo-server
+          ports:
+            - name: http-echo
+              containerPort: 7001
+            - name: http-echo-mtr
+              containerPort: 7090
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 7090
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 7090
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+      terminationGracePeriodSeconds: 30

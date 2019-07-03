@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: echo-client
+  namespace: default
+  labels:
+    app: echo-client
+    group: sample
+data:
+#   ECHOCLIENT_KUBE_HOST: "0.0.0.0"
+#   ECHOCLIENT_KUBE_PORT: "7090"
+#   ECHOCLIENT_KUBE_SHUTDOWN_TIMEOUT: "15"
+#   ECHOCLIENT_REST_HOST: "localhost"
+#   ECHOCLIENT_REST_PORT: "7001"
+#   ECHOCLIENT_REST_SHUTDOWN_TIMEOUT: "15"
+#   ECHOCLIENT_REST_SERVER_APP_PROTOCOL: "http"
+  ECHOCLIENT_REST_SERVER_APP_HOST: "gemini-server"
+#   ECHOCLIENT_REST_SERVER_APP_PORT: "7001"
+#   ECHOCLIENT_REST_SERVER_APP_URL_ROOT: "echo"

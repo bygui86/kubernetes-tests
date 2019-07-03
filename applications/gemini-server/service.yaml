@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gemini-server
+  namespace: default
+  labels:
+    app: gemini-server
+    group: sample
+spec:
+  type: NodePort
+  selector:
+    app: gemini-server
+    group: sample
+  ports:
+  # server-app
+    - name: http-app
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: http-app-metrics
+      port: 8090
+      targetPort: 8090
+      protocol: TCP
+  # echo-server
+    # - name: http-echo
+    #   port: 7001
+    #   targetPort: 7001
+    #   protocol: TCP
+    - name: http-echo-metrics
+      port: 7090
+      targetPort: 7090
+      protocol: TCP
