@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-server
+  namespace: default
+  labels:
+    app: echo-server
+    group: sample
+    version: 0.0.1
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: echo-server
+      group: sample
+      version: 0.0.1
+  template:
+    metadata:
+      labels:
+        app: echo-server
+        group: sample
+        version: 0.0.1
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: echo-server
+          image: echo-server:latest
+          # Kubernetes
+          # imagePullPolicy: Always
+          # Minikube
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: echo-server
+          ports:
+            - name: http
+              containerPort: 7001
+            - name: http-metrics
+              containerPort: 7090
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            exec:
+              command: ["/usr/bin/curl", "--connect-timeout", "2", "--max-time", "2", "http://localhost:7090/live"]
+              # command: ["/usr/bin/curl", "--connect-timeout", "2", "--max-time", "2", "http://echo-server:7090/live"]
+                # - "/usr/bin/curl"
+                # - "--connect-timeout"
+                # - "2"
+                # - "--max-time"
+                # - "2"
+                # - "http://localhost:7090/live"
+                # - "http://echo-server:7090/live"
+              # command: ["/usr/bin/health-check.sh", "localhost", "7090", "live"]
+              # command: ["/usr/bin/health-check.sh", "echo-server", "7090", "live"]
+                # - "/usr/bin/health-check.sh"
+                # - "localhost"
+                # - "echo-server"
+                # - "7090"
+                # - "live"
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["/usr/bin/curl", "--connect-timeout", "2", "--max-time", "2", "http://localhost:7090/ready"]
+              # command: ["/usr/bin/curl", "--connect-timeout", "2", "--max-time", "2", "http://echo-server:7090/ready"]
+                # - "/usr/bin/curl"
+                # - "--connect-timeout"
+                # - "2"
+                # - "--max-time"
+                # - "2"
+                # - "http://localhost:7090/ready"
+                # - "http://echo-server:7090/ready"
+              # command: ["/usr/bin/health-check.sh", "localhost", "7090", "ready"]
+              # command: ["/usr/bin/health-check.sh", "echo-server", "7090", "ready"]
+                # - "/usr/bin/health-check.sh"
+                # - "localhost"
+                # - "echo-server"
+                # - "7090"
+                # - "ready"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+      terminationGracePeriodSeconds: 30
