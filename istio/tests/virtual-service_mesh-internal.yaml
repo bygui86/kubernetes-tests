@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gemini-server-vs
+spec:
+  hosts:
+    - gemini-server-headless
+  http:
+    - route:
+      - destination:
+          host: gemini-server-headless
+          subset: gemini-server-echo
+  tcp:
+    - route:
+      - destination:
+          host: gemini-server-headless
+          subset: gemini-server-echo

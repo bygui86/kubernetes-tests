@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: gemini-server-dr
+spec:
+  host: gemini-server-headless
+  subsets:
+  - name: gemini-server-echo
+    labels:
+      app: gemini-server
+    # trafficPolicy:
+    # loadBalancer:
+    #   simple: ROUND_ROBIN
