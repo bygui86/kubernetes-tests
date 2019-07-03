@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-server
+  namespace: default
+  labels:
+    app: log-server
+    group: istio-mirroring
+# data:
+#   LOGSERVER_KUBE_HOST: "0.0.0.0"
+#   LOGSERVER_KUBE_PORT: "7090"
+#   LOGSERVER_KUBE_SHUTDOWN_TIMEOUT: "15"
+#   LOGSERVER_REST_HOST: "0.0.0.0"
+#   LOGSERVER_REST_PORT: "7001"
+#   LOGSERVER_REST_SHUTDOWN_TIMEOUT: "15"

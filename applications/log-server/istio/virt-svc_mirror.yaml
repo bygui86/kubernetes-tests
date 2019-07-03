@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: log-server
+spec:
+  hosts:
+    - log-server
+  http:
+  - route:
+    - destination:
+        host: log-server
+        subset: v1
+      weight: 100
+    mirror:
+      host: log-server
+      subset: v2
