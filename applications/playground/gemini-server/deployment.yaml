@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gemini-client
-  namespace: default
+  name: gemini-server
   labels:
-    app: gemini-client
+    app: gemini-server
     group: sample
     version: 0.0.1
 spec:
@@ -16,27 +15,31 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: gemini-client
+      app: gemini-server
       group: sample
       version: 0.0.1
   template:
     metadata:
       labels:
-        app: gemini-client
+        app: gemini-server
         group: sample
         version: 0.0.1
     spec:
       restartPolicy: Always
       containers:
-        - name: client-app-go
-          image: client-app-go:latest
+        - name: server-app-postgres
+          image: server-app-postgres:latest
           # Kubernetes
           # imagePullPolicy: Always
           # Minikube
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: client-app-go
+                name: server-app-postgres
+            - secretRef:
+                name: server-app-postgres
+            - secretRef:
+                name: postgres.acid-minimal-cluster.credentials
           ports:
             - name: http-app
               containerPort: 8080
@@ -44,38 +47,38 @@ spec:
               containerPort: 8090
           resources:
             limits:
+              cpu: 750m
+              memory: 512Mi
+            requests:
               cpu: 500m
               memory: 256Mi
-            requests:
-              cpu: 200m
-              memory: 128Mi
           livenessProbe:
             httpGet:
-              path: /live
+              path: /actuator/health
               port: 8090
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 3
             successThreshold: 1
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /ready
+              path: /actuator/health
               port: 8090
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 3
             successThreshold: 1
             failureThreshold: 3
-        - name: echo-client
-          image: echo-client:latest
+        - name: echo-server
+          image: echo-server:latest
           # Kubernetes
           # imagePullPolicy: Always
           # Minikube
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: echo-client
+                name: echo-server
           ports:
             - name: http-echo
               containerPort: 7001

@@ -2,7 +2,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gemini-server
-  namespace: default
   labels:
     app: gemini-server
     group: sample
