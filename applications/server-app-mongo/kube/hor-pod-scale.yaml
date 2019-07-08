@@ -2,7 +2,6 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: server-app-mongo
-  namespace: default
   labels:
     app: server-app-mongo
     group: sample

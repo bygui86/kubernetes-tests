@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: log-server-v2
-  namespace: default
   labels:
     app: log-server-v2
     group: istio-mirroring

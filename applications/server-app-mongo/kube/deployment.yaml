@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: server-app-mongo
-  namespace: default
   labels:
     app: server-app-mongo
     group: sample

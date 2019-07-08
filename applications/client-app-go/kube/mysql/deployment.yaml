@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: client-app-go
-  namespace: default
   labels:
     app: client-app-go
     group: sample

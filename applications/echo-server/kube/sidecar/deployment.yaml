@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: echo-server
-  namespace: default
   labels:
     app: echo-server
     group: sample
