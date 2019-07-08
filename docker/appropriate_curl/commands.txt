@@ -1,0 +1,5 @@
+
+docker pull appropriate/curl
+
+docker build . -t appropriate/curl:latest
+docker run -d --rm --name curlbox appropriate/curl

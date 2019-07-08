@@ -1,0 +1,3 @@
+
+https://hub.docker.com/r/appropriate/curl
+https://www.github.com/appropriate/docker-curl
