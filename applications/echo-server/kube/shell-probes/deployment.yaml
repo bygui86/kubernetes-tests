@@ -51,12 +51,10 @@ spec:
               memory: 128Mi
           livenessProbe:
             exec:
-              # command: ["/usr/bin/health-check.sh", "localhost", "7090", "live"]
-              # command: ["/usr/bin/health-check.sh", "echo-server", "7090", "live"]
+              # command: ["./health-check.sh", "localhost", "7090", "live"]
               command:
-                - "/usr/bin/health-check.sh"
+                - "./health-check.sh"
                 - "localhost"
-                # - "echo-server"
                 - "7090"
                 - "live"
             initialDelaySeconds: 10
@@ -66,12 +64,10 @@ spec:
             failureThreshold: 3
           readinessProbe:
             exec:
-              # command: ["/usr/bin/health-check.sh", "localhost", "7090", "ready"]
-              # command: ["/usr/bin/health-check.sh", "echo-server", "7090", "ready"]
+              # command: ["./health-check.sh", "localhost", "7090", "ready"]
               command:
-                - "/usr/bin/health-check.sh"
+                - "./health-check.sh"
                 - "localhost"
-                # - "echo-server"
                 - "7090"
                 - "ready"
             initialDelaySeconds: 10
