@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleepybox
+  labels:
+    app: sleepybox
+    group: sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sleepybox
+      group: sample
+  template:
+    metadata:
+      labels:
+        app: sleepybox
+        group: sample
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: sleepybox
+          image: sleepybox:latest
+          # Kubernetes
+          # imagePullPolicy: Always
+          # Minikube
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp
+              containerPort: 8600
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+      terminationGracePeriodSeconds: 30
