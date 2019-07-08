@@ -1,37 +1,38 @@
-# Kubernetes test applications
-Pool of simple applications to enhance testing of Kubernetes various aspects 
-
----
+# Kubernetes tests
+Pool of simple tests to enhance understanding of Kubernetes, Istio and cloud world
 
 ## TODOs
 
 ### version 1
 - [x] server-app
 - [x] client-app-java
-- [ ] postgres operator on kube
-- [ ] logging on kube
-- [ ] monitoring on kube
+- [x] client-app-go
+- [x] postgres operator on kube
+- [ ] logging on kube - `IN PROGRESS`
+- [ ] monitoring on kube - `IN PROGRESS`
 - [ ] tracing on kube
-- [ ] mapping on kube
-- [ ] traefik on kube
 - [ ] konstallate on kube
 
 ### version 2
-- [ ] introduce spring-cloud-kubernetes in server-app
-- [ ] introduce skaffold/jib
-- [ ] introduce kustomize
-- [ ] install ci/cd on kube
-
-### version 3
-- [ ] server-app with java11 modules
-- [ ] client-app-go
+- [ ] traefik on kube
 - [ ] rbac
-- [ ] network limitations
+- [ ] network limitations - `IN PROGRESS`
   - [ ] introduce calico
   - [ ] network policies
 
+### version 3
+- [ ] introduce spring-cloud-kubernetes in server-app
+- [ ] introduce skaffold/jib
+- [ ] introduce kustomize
+
 ### version 4
 - [ ] istio
+- [ ] flagger
+
+### best effort
+- [ ] install ci/cd on kube
+- [ ] ambassador on kube
+- [ ] server-app with java11 modules
 
 ---
 
@@ -42,14 +43,17 @@ Pool of simple applications to enhance testing of Kubernetes various aspects
 	- [ ] auto-config
 - [ ] monitoring > Prometheus, Grafana
 	- [x] manifests / operator
-	- [ ] auto-config
-	- [ ] influxdb as prometheus db
+	- [x] auto-config
 	- [x] prometheus-node-exporter
 	- [ ] prometheus-postgres-exporter
+	- [ ] influxdb as prometheus db
 - [ ] tracing > Jaeger
 	- [ ] manifests / operator
 	- [ ] auto-config
-- [ ] mapping > Kiali
+- [ ] istio
+	- [ ] manifests / operator
+	- [ ] auto-config
+- [ ] flagger
 	- [ ] manifests / operator
 	- [ ] auto-config
 - [ ] ci/cd > JenkinsX, Prow, Tekton
@@ -60,24 +64,50 @@ Pool of simple applications to enhance testing of Kubernetes various aspects
 
 ## Applications
 
-- [ ] server application
+- [x] server application
 	- [x] logs
 	- [x] metrics
 	- [x] tracing
 	- [x] docker multistage
-	- [ ] kubernetes manifests
-- [ ] client application java
-	- [ ] logs
-	- [ ] metrics
-	- [ ] tracing
-	- [ ] docker multistage
-	- [ ] kubernetes manifests
+	- [x] kubernetes manifests
+	- [x] h2 version
+	- [x] mongo version
+	- [x] mysql version
+	- [x] postgres version
+- [x] client application java
+	- [x] logs
+	- [x] metrics
+	- [x] tracing
+	- [x] docker multistage
+	- [x] kubernetes manifests
 - [ ] client application golang
-	- [ ] logs
+	- [x] logs
 	- [ ] metrics
 	- [ ] tracing
-	- [ ] docker multistage
-	- [ ] kubernetes manifests
+	- [x] docker multistage
+	- [x] kubernetes manifests
+- [x] log server
+	- [x] logs
+	- [x] docker multistage
+	- [x] kubernetes manifests
+	- [x] istio mirroring
+- [x] echo server
+	- [x] logs
+	- [x] docker multistage
+	- [x] kubernetes manifests
+	- [x] kube shell probes
+	- [x] istio testing
+- [x] echo client
+	- [x] logs
+	- [x] docker multistage
+	- [x] kubernetes manifests
+	- [x] kube shell probes
+	- [x] istio testing
+- [x] sleepybox
+	- [x] install networking tools
+	- [x] docker multistage
+	- [x] kubernetes manifests
+	- [x] istio testing
 
 ---
 
