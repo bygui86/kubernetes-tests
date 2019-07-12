@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra
+  labels:
+    app: cassandra
+    group: db
+spec:
+  clusterIP: None
+  type: ClusterIP
+  selector:
+    app: cassandra
+    group: db
+  ports:
+  # cassandra
+  - name: intra-node
+    port: 7000
+    targetPort: 7000
+  - name: tls-intra-node
+    port: 7001
+    targetPort: 7001
+  - name: jmx
+    port: 7199
+    targetPort: 7199
+  - name: cql
+    port: 9042
+    targetPort: 9042
+  - name: thrift
+    port: 9160
+    targetPort: 9160
+  # exporter
+  - name: jmx-exporter
+    port: 5555
+    targetPort: 5555
+  - name: metrics
+    port: 8080
+    targetPort: 8080
+    protocol: TCP

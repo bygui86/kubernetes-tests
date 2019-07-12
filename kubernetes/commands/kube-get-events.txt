@@ -1,0 +1,16 @@
+
+k get events --sort-by=.metadata.creationTimestamp
+k get events --field-selector type=Warning
+k get events --field-selector involvedObject.kind=Pod
+k get events --field-selector involvedObject.kind=Node,involvedObject.name=minikube
+
+k get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning,involvedObject.kind=Pod -w
+
+k get events \
+	--sort-by=.metadata.creationTimestamp \
+	--all-namespaces -o wide
+
+k get events \
+	--field-selector involvedObject.name=hdp-writer \
+	--sort-by=.metadata.creationTimestamp \
+	--all-namespaces -o wide
