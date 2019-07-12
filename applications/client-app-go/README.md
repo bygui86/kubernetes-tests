@@ -1,69 +1,47 @@
 
 # Client App Go
 
-## Instructions
+## Build & run
 
-1. Prepare
-	```shell
-	mkdir -p $GOPATH/src/github.com
-	cd $GOPATH/src/github.com
-	git clone git@github.com:bygui86/kubernetes-tests.git
-	cd bygui86/kubernetes-tests/applications/client-app-go
-	go get ./...
+* Locally
 	```
-
-2. Build
-	```shell
 	go build .
-	```
-
-3. Build Docker image
-	* from build
-	```shell
-	CGO_ENABLED=0 && GOOS=linux && go build -a -installsuffix cgo .
-	docker build . -t client-app-go:latest
-	```
-	* multistage
-	```shell
-	docker build . -f Dockerfile_multistage -t client-app-go:latest
-	```
-
-4. Run
-	* from code
-	```shell
 	go run main.go
-	```
-	* from compiled
-	```shell
+		or
 	./client-app-go
 	```
-	* as container
-	```shell
-	docker run -d --name client-app-go -p 8080:8080 -p 8090:8090 client-app-go:latest && docker logs client-app-go -f
+
+* On docker
+	```
+	docker build . -t client-app-go:latest
+	docker run -d --name client-app-go -p 8080:8080 -p 8090:8090 client-app-go:latest
+	docker logs client-app-go -f
 	```
 
-5. Test
-	* POST
-		```shell
-		http POST :8080/apis/users email="matteo.baiguini@rabbit.com" name="Matteo Baiguini" age=33
-		http POST :8080/apis/users email="john.doe@rabbit.com" name="John Doe" age=42
-		http POST :8080/apis/users email="jane.doe@rabbit.com" name="Jane Doe" age=24
-		http POST :8080/apis/users email="clint.eastwood@rabbit.com" name="Clint Eastwood" age=75
-		```
-	* GET
-		```shell
-		http :8080/apis/users
-		http :8080/apis/users/matteo.baiguini@rabbit.com
-		```
-	* PUT
-		```shell
-		http PUT :8080/apis/users id=$(http :8080/apis/users/clint.eastwood@rabbit.com | jq ".id") email="clint.eastwood@rabbit.com" name="Clint Eastwood" age=89
-		```
-	* DELETE
-		```shell
-		http DELETE :8080/apis/users/clint.eastwood@rabbit.com
-		http DELETE :8080/apis/users
-		```
+---
+
+## API calls
+* POST
+	```
+	http POST :8080/apis/users email="matteo.baiguini@rabbit.com" name="Matteo Baiguini" age=33
+	http POST :8080/apis/users email="john.doe@rabbit.com" name="John Doe" age=42
+	http POST :8080/apis/users email="jane.doe@rabbit.com" name="Jane Doe" age=24
+	http POST :8080/apis/users email="clint.eastwood@rabbit.com" name="Clint Eastwood" age=75
+	```
+* GET
+	```
+	http :8080/apis/users
+	http :8080/apis/users/matteo.baiguini@rabbit.com
+	```
+* PUT
+	```
+	http PUT :8080/apis/users id=$(http :8080/apis/users/clint.eastwood@rabbit.com | jq ".id") email="clint.eastwood@rabbit.com" name="Clint Eastwood" age=89
+	```
+* DELETE
+	```
+	http DELETE :8080/apis/users/clint.eastwood@rabbit.com
+	http DELETE :8080/apis/users
+	```
 
 ---
 
@@ -88,7 +66,7 @@
 
 ### 0.0.2 - `TODO`
 - [ ] expose metrics
-- [ ] expose tracing
+- [ ] expose traces
 
 ### 0.0.3 - `TODO`
 - [ ] use kustomize for kube manifests
