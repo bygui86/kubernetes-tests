@@ -1,0 +1,21 @@
+# https://istio.io/faq/security/#mysql-with-mtls
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: mysql-mtls-authn
+spec:
+  targets:
+  - name: mysql
+  peers:
+  - mtls:
+      mode: STRICT
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: mysql-mtls-dr
+spec:
+  host: mysql
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL

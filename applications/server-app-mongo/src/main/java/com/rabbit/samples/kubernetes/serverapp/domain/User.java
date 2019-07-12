@@ -27,7 +27,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User extends Auditable {
 
 	@Id
-	Long id;
+	String id;
 
 	String email;
 

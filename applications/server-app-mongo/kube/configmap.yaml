@@ -9,5 +9,7 @@ data:
   SPRING_PROFILES_ACTIVE: "kube"
   HEAP_SIZE: "256m"
   META_SIZE: "300m"
-  MONGO_DB: "server-app"
+  MONGODB_HOST: "mongodb"
+  MONGODB_PORT: "27017"
+  MONGODB_DB: "server-app"
   SERVER_TRACING_PROBABILITY: "1.0"

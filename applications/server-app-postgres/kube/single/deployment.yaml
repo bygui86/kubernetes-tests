@@ -5,7 +5,7 @@ metadata:
   labels:
     app: server-app-postgres
     group: sample
-    version: 0.0.1
+    version: kube-tests
 spec:
   replicas: 1
   strategy:
@@ -17,13 +17,13 @@ spec:
     matchLabels:
       app: server-app-postgres
       group: sample
-      version: 0.0.1
+      version: kube-tests
   template:
     metadata:
       labels:
         app: server-app-postgres
         group: sample
-        version: 0.0.1
+        version: kube-tests
     spec:
       restartPolicy: Always
       containers:
@@ -38,8 +38,6 @@ spec:
                 name: server-app-postgres
             - secretRef:
                 name: server-app-postgres
-            - secretRef:
-                name: server-postgresql
           ports:
             - name: http
               containerPort: 8080

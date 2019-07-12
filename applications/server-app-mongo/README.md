@@ -55,6 +55,7 @@
 
 * On Kubernetes
 	```
+	kubectl apply -f kube/mongodb.yaml
 	kubectl apply -f kube/configmap.yaml
 	kubectl apply -f kube/secret.yaml
 	kubectl apply -f kube/service.yaml

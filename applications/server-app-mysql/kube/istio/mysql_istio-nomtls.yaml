@@ -1,0 +1,8 @@
+# see https://istio.io/faq/security/#mysql-with-mtls
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: mysql-nomtls
+spec:
+  targets:
+    - name: mysql

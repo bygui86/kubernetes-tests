@@ -51,7 +51,7 @@ public class UserController {
 		log.info("Get by email: {}", email);
 		User user = getUserRepo().findByEmail(email);
 		if(user == null) {
-			user = buildErrorUser(email);
+			user = buildErrorUserByEmail(email);
 		}
 		log.info("User by email: {}", user);
 		return user;
@@ -95,29 +95,29 @@ public class UserController {
 	/* ADDITIONAL */
 
 	@GetMapping("/additional/{id}")
-	public User getById(@PathVariable final Long id) {
+	public User getById(@PathVariable final String id) {
 
 		log.info("Get by id: {}", id);
 		User user = getUserRepo()
 				.findById(id)
-				.orElse(buildErrorUser(id));
+				.orElse(buildErrorUserById(id));
 		log.info("User by id: {}", user);
 		return user;
 	}
 
 	@DeleteMapping("/additional/{id}")
-	public void deleteById(@PathVariable final Long id) {
+	public void deleteById(@PathVariable final String id) {
 
 		log.info("Delete by id: {}", id);
 		getUserRepo().deleteById(id);
 	}
 
-	private User buildErrorUser(final Long id){
+	private User buildErrorUserById(final String id){
 
 		return User.builder().id(id).errorMessage(USER_NOT_FOUND_ERR_MSG).build();
 	}
 
-	private User buildErrorUser(final String email){
+	private User buildErrorUserByEmail(final String email){
 
 		return User.builder().email(email).errorMessage(USER_NOT_FOUND_ERR_MSG).build();
 	}

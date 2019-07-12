@@ -5,7 +5,7 @@ metadata:
   labels:
     app: server-app-mysql
     group: sample
-    version: 0.0.1
+    version: kube-tests
 spec:
   replicas: 1
   strategy:
@@ -17,13 +17,13 @@ spec:
     matchLabels:
       app: server-app-mysql
       group: sample
-      version: 0.0.1
+      version: kube-tests
   template:
     metadata:
       labels:
         app: server-app-mysql
         group: sample
-        version: 0.0.1
+        version: kube-tests
     spec:
       restartPolicy: Always
       containers:
@@ -38,8 +38,6 @@ spec:
                 name: server-app-mysql
             - secretRef:
                 name: server-app-mysql
-            - secretRef:
-                name: server-mysql
           ports:
             - name: http
               containerPort: 8080
