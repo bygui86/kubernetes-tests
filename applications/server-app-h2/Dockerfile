@@ -1,11 +1,24 @@
 
+FROM openjdk:11-stretch AS build
+
+WORKDIR /opt
+
+COPY .mvn /opt/.mvn
+COPY src /opt/src
+COPY mvnw /opt
+COPY pom.xml /opt
+
+RUN ./mvnw clean package
+
+#---
+
 FROM openjdk:11-stretch
 
 EXPOSE 8080
 EXPOSE 8090
 
 WORKDIR /opt
-COPY target/server-app-h2.jar app.jar
+COPY --from=build /opt/target/server-app-h2.jar app.jar
 
 USER 1001
 
