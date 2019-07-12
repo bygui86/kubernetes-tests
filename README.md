@@ -1,6 +1,15 @@
 # Kubernetes tests
 Pool of simple tests to enhance understanding of Kubernetes, Istio and cloud world
 
+## Sections
+
+* [kubernetes](kubernetes)
+* [applications](applications)
+* [docker](docker)
+* [istio](istio)
+
+---
+
 ## TODOs
 
 ### version 1
