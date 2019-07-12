@@ -6,7 +6,7 @@
 ### Stand-alone
 
 1. Start minikube
-	```shell
+	```
 	minikube start \
 		--profile mysql \
 		--vm-driver hyperkit --cpus 4 --memory 12288 \
@@ -15,9 +15,19 @@
 	```
 
 2. Deploy
-	```shell
-	helm install --name server -f values.yaml stable/mysql
-	```
+	* automatic using Helm
+		```
+		helm install --name server -f values.yaml stable/mysql
+		```
+	* manual
+		```
+		helm template --name mysql -f values.yaml . > mysql.yaml
+		kubectl apply -f mysql.yaml
+		```
+
+### Cluster
+
+`TODO`
 
 ### Operator
 

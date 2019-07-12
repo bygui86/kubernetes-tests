@@ -166,13 +166,13 @@ serviceAccount:
 
 priorityClassName: ""
 
-resources: {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 300Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 300Mi
+resources:
+  limits:
+    cpu: 350m
+    memory: 600Mi
+  requests:
+    cpu: 100m
+    memory: 300Mi
 
 # Affinity for pod assignment
 # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity

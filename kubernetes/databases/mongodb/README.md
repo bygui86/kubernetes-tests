@@ -6,7 +6,7 @@
 ### Stand-alone
 
 1. Start minikube
-	```shell
+	```
 	minikube start \
 		--profile mongo \
 		--vm-driver hyperkit --cpus 4 --memory 12288 \
@@ -15,14 +15,20 @@
 	```
 
 2. Deploy
-	```shell
-	helm install --name server -f values.yaml stable/mongodb
-	```
+	* automatic using Helm
+		```
+		helm install --name mongodb -f values.yaml stable/mongodb
+		```
+	* manual
+		```
+		helm template --name mongodb -f values.yaml . > mongodb.yaml
+		kubectl apply -f mongodb.yaml
+		```
 
-### Replicaset
+### Cluster (Replicaset in MongoDB naming convention)
 
 1. Start minikube
-	```shell
+	```
 	minikube start \
 		--profile mongo \
 		--vm-driver hyperkit --cpus 4 --memory 12288 \
@@ -31,9 +37,12 @@
 	```
 
 2. Deploy
-	```shell
-	helm install --name server -f values.yaml stable/mongodb-replicaset
-	```
+	* automatic using Helm
+		```
+		helm install --name server -f values.yaml stable/mongodb-replicaset
+		```
+	* manual
+		`TODO`
 
 ### Operator
 
