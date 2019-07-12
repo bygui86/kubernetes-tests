@@ -1,0 +1,23 @@
+apiVersion: kiali.io/v1alpha1
+kind: Kiali
+metadata:
+  name: kiali
+  namespace: kiali-operator
+  finalizers:
+    - finalizer.kiali
+spec:
+  auth:
+    # avialable values: login | anonymous | openshift
+    strategy: anonymous
+  deployment:
+    image_version: v1.1.0
+    namespace: istio-system
+    # how to define this secret?
+    secret_name: kiali
+    accessible_namespaces:
+      - '**'
+  external_services:
+    grafana:
+      url: ""
+    jaeger:
+      url: ""
