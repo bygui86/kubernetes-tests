@@ -5,11 +5,11 @@ metadata:
   name: kiali-operator
   labels:
     app: kiali-operator
-    version: ${OPERATOR_VERSION_LABEL}
+    version: v1.1.0
 subjects:
 - kind: ServiceAccount
   name: kiali-operator
-  namespace: ${OPERATOR_NAMESPACE}
+  namespace: kiali-operator
 roleRef:
   kind: ClusterRole
   name: kiali-operator

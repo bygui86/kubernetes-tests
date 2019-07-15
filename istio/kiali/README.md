@@ -30,46 +30,52 @@
 
 ### Manual
 
-#### Version
+#### Preliminary steps
 ```
 KIALI_VERSION=v1.1.0
+OPERATOR_NAMESPACE=kiali-operator
 ```
 
 #### Kiali operator
-##### Namespace
-```
-curl -O https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/namespace.yaml
-kubectl apply -f namespace.yaml
-```
-##### CRDs
-```
-curl -O https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/crd.yaml
-kubectl apply -f crd.yaml -n kiali-operator
-```
-##### RBAC
-```
-curl -O https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/service_account.yaml
-curl -O https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/role.yaml
-curl -O https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/role_binding.yaml
-kubectl apply -f service_account.yaml -n kiali-operator
-kubectl apply -f role.yaml -n kiali-operator
-kubectl apply -f role_binding.yaml -n kiali-operator
-```
-##### Operator
-```
-curl -O https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/operator.yaml
-kubectl apply -f operator.yaml -n kiali-operator
-```
+
+1. Namespace
+  ```
+  curl https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/namespace.yaml > 1_namespace.yaml
+  kubectl apply -f 1_namespace.yaml
+  ```
+
+2. CRDs
+  ```
+  curl https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/crd.yaml > 2_crd.yaml
+  kubectl apply -f 2_crd.yaml
+  ```
+
+3. RBAC
+  ```
+  curl https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/service_account.yaml > 3_service-account.yaml
+  curl https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/role.yaml > 4_cluster-role.yaml
+  curl https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/role_binding.yaml > 5_cluster-role-binding.yaml
+  kubectl apply -f 3_service-account.yaml
+  kubectl apply -f 4_cluster-role.yaml
+  kubectl apply -f 5_cluster-role-binding.yaml
+  ```
+
+4. Operator
+  ```
+  curl https://raw.githubusercontent.com/kiali/kiali/$KIALI_VERSION/operator/deploy/operator.yaml > 6_operator.yaml
+  kubectl apply -f 6_operator.yaml
+  ```
 
 #### Kiali
+
 1. Download example
   ```
-  curl -O https://raw.githubusercontent.com/kiali/kiali/master/operator/deploy/kiali/kiali_cr.yaml
+  curl https://raw.githubusercontent.com/kiali/kiali/master/operator/deploy/kiali/kiali_cr.yaml > 7_kiali-cr.yaml
   ```
 
 2. Customize example
 
 3. Deploy Kiali
   ```
-  kubectl apply -f kiali_cr.yaml
+  kubectl apply -f 7_kiali-cr.yaml
   ```

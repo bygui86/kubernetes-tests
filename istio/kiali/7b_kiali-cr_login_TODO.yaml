@@ -8,8 +8,9 @@ metadata:
 spec:
   auth:
     # avialable values: login | anonymous | openshift
-    strategy: anonymous
+    strategy: login
   deployment:
+    # image_name: kiali/kiali
     image_version: v1.1.0
     namespace: istio-system
     # how to define this secret?

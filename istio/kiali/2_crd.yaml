@@ -5,7 +5,7 @@ metadata:
   name: monitoringdashboards.monitoring.kiali.io
   labels:
     app: kiali
-    version: ${OPERATOR_VERSION_LABEL}
+    version: v1.1.0
 spec:
   group: monitoring.kiali.io
   names:
@@ -22,7 +22,7 @@ metadata:
   name: kialis.kiali.io
   labels:
     app: kiali-operator
-    version: ${OPERATOR_VERSION_LABEL}
+    version: v1.1.0
 spec:
   group: kiali.io
   names:
