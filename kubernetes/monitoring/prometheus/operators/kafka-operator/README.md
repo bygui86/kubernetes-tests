@@ -41,8 +41,8 @@
 
 3. Deploy Prometheus additional metrics as secret
 	```
-	kubectl create secret generic additional-scrape-configs --from-file=3_additional-metrics.yaml -n <KAFKA_CLUSTER_NAMESPACE>
-	kubectl create secret generic additional-scrape-configs --from-file=3_additional-metrics.yaml -n <PROMETHEUS_NAMESPACE>
+	kubectl create secret generic prometheus-additional-scrape-configs --from-file=3_additional-metrics.yaml -n <KAFKA_CLUSTER_NAMESPACE>
+	kubectl create secret generic prometheus-additional-scrape-configs --from-file=3_additional-metrics.yaml -n <PROMETHEUS_NAMESPACE>
 	```
 
 4. Deploy Prometheus ServiceMonitor

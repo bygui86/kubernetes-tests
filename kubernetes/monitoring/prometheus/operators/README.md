@@ -2,6 +2,8 @@
 
 ## Instructions
 
+### Using Helm
+
 1. Deploy Prometheus operator
 	```
 	helm install --name prometheus \
@@ -11,13 +13,36 @@
 
 2. Forward port to verify everything properly in place
 	* Grafana
-	```
-	kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring
-	```
+		```
+		kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring
+		```
 	* Prometheus
+		```
+		kubectl port-forward svc/prometheus-prometheus-oper-prometheus 9090:9090 -n monitoring
+		```
+
+### Using plain manifests
+
+1. Deploy Prometheus operator
 	```
-	kubectl port-forward svc/prometheus-prometheus-oper-prometheus 9090:9090 -n monitoring
+	kubectl create -f manifests/
+	until kubectl get customresourcedefinitions servicemonitors.monitoring.coreos.com ; do date; sleep 1; echo "Waiting for CRDs installation..."; done
+	until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo "Waiting for ServiceMonitors installation..."; done
+	kubectl apply -f manifests/
 	```
+	`WARN: It can take a few seconds for the above 'create manifests' command to fully create the following resources, so verify the resources are ready before proceeding.`
+
+2. Forward port to verify everything properly in place
+	* Grafana
+		```
+		kubectl port-forward svc/grafana 3000:3000 -n monitoring
+		```
+	* Prometheus
+		```
+		kubectl port-forward svc/prometheus-k8s 9090:9090 -n monitoring
+		```
+
+---
 
 ## Extract Kubernetes manifests
 
@@ -26,6 +51,8 @@ cd community-prometheus-operator
 helm dependency update
 helm template -f values.yaml .
 ```
+
+---
 
 ## Exporters
 
