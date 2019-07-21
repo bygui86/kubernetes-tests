@@ -6,6 +6,7 @@ import (
 	"syscall"
 
 	"github.com/bygui86/kubernetes-tests/applications/client-app-go/kubernetes"
+	"github.com/bygui86/kubernetes-tests/applications/client-app-go/monitoring"
 	"github.com/bygui86/kubernetes-tests/applications/client-app-go/rest"
 	"github.com/bygui86/kubernetes-tests/applications/client-app-go/utils/logger"
 )
@@ -17,6 +18,9 @@ func main() {
 
 	kubeServer := startKubernetes()
 	defer kubeServer.Shutdown()
+
+	monServer := startMonitor()
+	defer monServer.Shutdown()
 
 	restServer := startRest()
 	defer restServer.Shutdown()
@@ -38,6 +42,22 @@ func startKubernetes() *kubernetes.KubeServer {
 
 	server.Start()
 	logger.Log.Debugln("[MAIN] Kubernetes successfully started")
+
+	return server
+}
+
+// startMonitor -
+func startMonitor() *monitoring.MonitorServer {
+
+	server, err := monitoring.NewMonitorServer()
+	if err != nil {
+		logger.Log.Errorf("[MAIN] Monitoring server creation failed: %s", err.Error())
+		os.Exit(404)
+	}
+	logger.Log.Debugln("[MAIN] Monitoring server successfully created")
+
+	server.Start()
+	logger.Log.Debugln("[MAIN] Monitoring successfully started")
 
 	return server
 }
