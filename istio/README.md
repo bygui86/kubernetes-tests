@@ -12,3 +12,6 @@
 ## [Tests](tests)
 
 ## [Issues](issues)
+
+## Other topics
+* [Multi-tenancy](docs/multi-tenancy.md)
