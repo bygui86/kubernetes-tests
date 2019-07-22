@@ -13,7 +13,7 @@ const (
 
 	// Default values -
 	// host values: '0.0.0.0' for kubernetes, 'localhost' for local
-	kubeHostDefault     = "0.0.0.0"
+	kubeHostDefault     = "localhost"
 	kubePortDefault     = 8090
 	kubeShutdownTimeout = 15
 )

@@ -19,12 +19,12 @@ const (
 
 	// Default values -
 	// host values: '0.0.0.0' for kubernetes, 'localhost' for local
-	restHostDefault              = "0.0.0.0"
+	restHostDefault              = "localhost"
 	restPortDefault              = 8080
 	restShutdownTimeoutDefault   = 15
 	restServerAppProtocolDefault = "http"
-	restServerAppHostDefault     = "server-app"
-	restServerAppPortDefault     = 8080
+	restServerAppHostDefault     = "localhost"
+	restServerAppPortDefault     = 8081
 	restServerAppUrlRootDefault  = "users"
 )
 

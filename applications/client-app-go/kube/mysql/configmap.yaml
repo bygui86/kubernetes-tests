@@ -6,4 +6,8 @@ metadata:
     app: client-app-go
     group: sample
 data:
+  CLIENTGO_KUBE_HOST: "0.0.0.0"
+  CLIENTGO_MONITOR_HOST: "0.0.0.0"
+  CLIENTGO_REST_HOST: "0.0.0.0"
   CLIENTGO_REST_SERVER_APP_HOST: "server-app-mysql"
+  CLIENTGO_REST_SERVER_APP_PORT: "8080"
