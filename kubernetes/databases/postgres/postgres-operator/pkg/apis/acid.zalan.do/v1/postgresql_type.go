@@ -53,11 +53,16 @@ type PostgresSpec struct {
 	Databases             map[string]string    `json:"databases,omitempty"`
 	Tolerations           []v1.Toleration      `json:"tolerations,omitempty"`
 	Sidecars              []Sidecar            `json:"sidecars,omitempty"`
-	InitContainers        []v1.Container       `json:"init_containers,omitempty"`
-	PodPriorityClassName  string               `json:"pod_priority_class_name,omitempty"`
+	InitContainers        []v1.Container       `json:"initContainers,omitempty"`
+	PodPriorityClassName  string               `json:"podPriorityClassName,omitempty"`
 	ShmVolume             *bool                `json:"enableShmVolume,omitempty"`
 	EnableLogicalBackup   bool                 `json:"enableLogicalBackup,omitempty"`
 	LogicalBackupSchedule string               `json:"logicalBackupSchedule,omitempty"`
+	StandbyCluster        *StandbyDescription  `json:"standby"`
+
+	// deprecated json tags
+	InitContainersOld       []v1.Container `json:"init_containers,omitempty"`
+	PodPriorityClassNameOld string         `json:"pod_priority_class_name,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -82,6 +87,7 @@ type MaintenanceWindow struct {
 type Volume struct {
 	Size         string `json:"size"`
 	StorageClass string `json:"storageClass"`
+	SubPath      string `json:"subPath,omitempty"`
 }
 
 // PostgresqlParam describes PostgreSQL version and pairs of configuration parameter name - values.
@@ -113,12 +119,21 @@ type Patroni struct {
 	Slots                map[string]map[string]string `json:"slots"`
 }
 
+//StandbyCluster
+type StandbyDescription struct {
+	S3WalPath string `json:"s3_wal_path,omitempty"`
+}
+
 // CloneDescription describes which cluster the new should clone and up to which point in time
 type CloneDescription struct {
-	ClusterName  string `json:"cluster,omitempty"`
-	UID          string `json:"uid,omitempty"`
-	EndTimestamp string `json:"timestamp,omitempty"`
-	S3WalPath    string `json:"s3_wal_path,omitempty"`
+	ClusterName       string `json:"cluster,omitempty"`
+	UID               string `json:"uid,omitempty"`
+	EndTimestamp      string `json:"timestamp,omitempty"`
+	S3WalPath         string `json:"s3_wal_path,omitempty"`
+	S3Endpoint        string `json:"s3_endpoint,omitempty"`
+	S3AccessKeyId     string `json:"s3_access_key_id,omitempty"`
+	S3SecretAccessKey string `json:"s3_secret_access_key,omitempty"`
+	S3ForcePathStyle  *bool  `json:"s3_force_path_style,omitempty" defaults:"false"`
 }
 
 // Sidecar defines a container to be run in the same pod as the Postgres container.
