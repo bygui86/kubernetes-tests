@@ -25,10 +25,10 @@
 
 1. Deploy Prometheus operator
 	```
-	kubectl create -f manifests/
+	kubectl create -f coreos-kube-prometheus/manifests/
 	until kubectl get customresourcedefinitions servicemonitors.monitoring.coreos.com ; do date; sleep 1; echo "Waiting for CRDs installation..."; done
 	until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo "Waiting for ServiceMonitors installation..."; done
-	kubectl apply -f manifests/
+	kubectl apply -f coreos-kube-prometheus/manifests/
 	```
 	`WARN: It can take a few seconds for the above 'create manifests' command to fully create the following resources, so verify the resources are ready before proceeding.`
 
