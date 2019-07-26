@@ -1,0 +1,11 @@
+apiVersion: projectcalico.org/v3
+kind: FelixConfiguration
+metadata:
+  creationTimestamp: null
+  name: default
+spec:
+  XDPRefreshInterval: null
+  ipipEnabled: true
+  logSeverityScreen: Info
+  reportingInterval: 0s
+  policySyncPathPrefix: /var/run/nodeagent
