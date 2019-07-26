@@ -1,5 +1,5 @@
 
-# Kubernetes Ingress controller - Traefik
+# Kubernetes tests - Ingress controller - Traefik
 
 ## Instructions
 

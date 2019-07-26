@@ -102,12 +102,12 @@
   kubectl create namespace istio-system
   ```
 
-2. Prepare Istio-CNI manifests
+2. Prepare Istio-CRDs manifests
   ```
-  helm template $ISTIO_HOME/install/kubernetes/helm/istio-cni \
-    --name=istio-cni \
-    --namespace=kube-system \
-    > istio-cni.yaml
+  helm template $ISTIO_HOME/install/kubernetes/helm/istio-init \
+    --name istio-init \
+    --namespace istio-system \
+  > istio-crds.yaml
   ```
 
 3. Deploy Istio-CRDs
@@ -121,17 +121,17 @@
     >> 23
   ```
 
-5. Deploy Istio-CNI manifests
+5. Prepare Istio-CNI manifests
   ```
-  kubectl apply -f istio-cni.yaml
+  helm template $ISTIO_HOME/install/kubernetes/helm/istio-cni \
+    --name=istio-cni \
+    --namespace=kube-system \
+    > istio-cni.yaml
   ```
 
-6. Prepare Istio-CRDs manifests
+6. Deploy Istio-CNI manifests
   ```
-  helm template $ISTIO_HOME/install/kubernetes/helm/istio-init \
-    --name istio-init \
-    --namespace istio-system \
-  > istio-crds.yaml
+  kubectl apply -f istio-cni.yaml
   ```
 
 7. Prepare Istio manifests

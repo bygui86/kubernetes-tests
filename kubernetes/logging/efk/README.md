@@ -4,7 +4,7 @@
 ## Instructions
 
 1. Deploy
-	```shell
+	```
 	minikube start --cpus 4 --memory 8192
 
 	kubectl create namespace logging
@@ -26,7 +26,7 @@
 	```
 
 1. Configure Kibana
-	```shell
+	```
 	minikube service list
 		or
 	kubectl get svc --all-namespaces
@@ -44,7 +44,7 @@
 	8. Leave open the window
 
 4. Spin up application
-	```shell
+	```
 	docker build -t fluentd-node-sample:latest -f sample-app/Dockerfile sample-app
 	kubectl apply -f kubernetes/node-deployment.yaml -n default
 	```
