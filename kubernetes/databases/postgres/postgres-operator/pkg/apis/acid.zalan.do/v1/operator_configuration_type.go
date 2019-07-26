@@ -49,6 +49,7 @@ type KubernetesMetaConfiguration struct {
 	SpiloFSGroup                           *int64                `json:"spilo_fsgroup,omitempty"`
 	WatchedNamespace                       string                `json:"watched_namespace,omitempty"`
 	PDBNameFormat                          config.StringTemplate `json:"pdb_name_format,omitempty"`
+	EnablePodDisruptionBudget              *bool                 `json:"enable_pod_disruption_budget,omitempty"`
 	SecretNameTemplate                     config.StringTemplate `json:"secret_name_template,omitempty"`
 	ClusterDomain                          string                `json:"cluster_domain"`
 	OAuthTokenSecretName                   spec.NamespacedName   `json:"oauth_token_secret_name,omitempty"`
@@ -100,10 +101,12 @@ type LoadBalancerConfiguration struct {
 // AWSGCPConfiguration defines the configuration for AWS
 // TODO complete Google Cloud Platform (GCP) configuration
 type AWSGCPConfiguration struct {
-	WALES3Bucket string `json:"wal_s3_bucket,omitempty"`
-	AWSRegion    string `json:"aws_region,omitempty"`
-	LogS3Bucket  string `json:"log_s3_bucket,omitempty"`
-	KubeIAMRole  string `json:"kube_iam_role,omitempty"`
+	WALES3Bucket              string `json:"wal_s3_bucket,omitempty"`
+	AWSRegion                 string `json:"aws_region,omitempty"`
+	LogS3Bucket               string `json:"log_s3_bucket,omitempty"`
+	KubeIAMRole               string `json:"kube_iam_role,omitempty"`
+	AdditionalSecretMount     string `json:"additional_secret_mount,omitempty"`
+	AdditionalSecretMountPath string `json:"additional_secret_mount_path" default:"/meta/credentials"`
 }
 
 // OperatorDebugConfiguration defines options for the debug mode
@@ -118,6 +121,7 @@ type TeamsAPIConfiguration struct {
 	TeamsAPIUrl              string            `json:"teams_api_url,omitempty"`
 	TeamAPIRoleConfiguration map[string]string `json:"team_api_role_configuration,omitempty"`
 	EnableTeamSuperuser      bool              `json:"enable_team_superuser,omitempty"`
+	EnableAdminRoleForUsers  bool              `json:"enable_admin_role_for_users,omitempty"`
 	TeamAdminRole            string            `json:"team_admin_role,omitempty"`
 	PamRoleName              string            `json:"pam_role_name,omitempty"`
 	PamConfiguration         string            `json:"pam_configuration,omitempty"`
@@ -152,11 +156,12 @@ type OperatorConfigurationData struct {
 	MaxInstances               int32                              `json:"max_instances,omitempty"`
 	ResyncPeriod               Duration                           `json:"resync_period,omitempty"`
 	RepairPeriod               Duration                           `json:"repair_period,omitempty"`
+	SetMemoryRequestToLimit    bool                               `json:"set_memory_request_to_limit,omitempty"`
+	ShmVolume                  *bool                              `json:"enable_shm_volume,omitempty"`
 	Sidecars                   map[string]string                  `json:"sidecar_docker_images,omitempty"`
 	PostgresUsersConfiguration PostgresUsersConfiguration         `json:"users"`
 	Kubernetes                 KubernetesMetaConfiguration        `json:"kubernetes"`
 	PostgresPodResources       PostgresPodResourcesDefaults       `json:"postgres_pod_resources"`
-	SetMemoryRequestToLimit    bool                               `json:"set_memory_request_to_limit,omitempty"`
 	Timeouts                   OperatorTimeouts                   `json:"timeouts"`
 	LoadBalancer               LoadBalancerConfiguration          `json:"load_balancer"`
 	AWSGCP                     AWSGCPConfiguration                `json:"aws_or_gcp"`

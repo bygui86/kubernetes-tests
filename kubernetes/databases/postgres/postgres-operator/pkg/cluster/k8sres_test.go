@@ -1,23 +1,25 @@
 package cluster
 
 import (
+	"reflect"
+
 	"k8s.io/api/core/v1"
 
 	"testing"
 
 	acidv1 "github.com/zalando/postgres-operator/pkg/apis/acid.zalan.do/v1"
+	"github.com/zalando/postgres-operator/pkg/util"
 	"github.com/zalando/postgres-operator/pkg/util/config"
 	"github.com/zalando/postgres-operator/pkg/util/constants"
 	"github.com/zalando/postgres-operator/pkg/util/k8sutil"
+
+	policyv1beta1 "k8s.io/api/policy/v1beta1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-func True() *bool {
-	b := true
-	return &b
-}
-
-func False() *bool {
-	b := false
+func toIntStr(val int) *intstr.IntOrString {
+	b := intstr.FromInt(val)
 	return &b
 }
 
@@ -107,14 +109,14 @@ func TestCreateLoadBalancerLogic(t *testing.T) {
 		{
 			subtest:  "new format, load balancer is enabled for replica",
 			role:     Replica,
-			spec:     &acidv1.PostgresSpec{EnableReplicaLoadBalancer: True()},
+			spec:     &acidv1.PostgresSpec{EnableReplicaLoadBalancer: util.True()},
 			opConfig: config.Config{},
 			result:   true,
 		},
 		{
 			subtest:  "new format, load balancer is disabled for replica",
 			role:     Replica,
-			spec:     &acidv1.PostgresSpec{EnableReplicaLoadBalancer: False()},
+			spec:     &acidv1.PostgresSpec{EnableReplicaLoadBalancer: util.False()},
 			opConfig: config.Config{},
 			result:   false,
 		},
@@ -139,6 +141,113 @@ func TestCreateLoadBalancerLogic(t *testing.T) {
 		if tt.result != result {
 			t.Errorf("%s %s: Load balancer is %t, expect %t for role %#v and spec %#v",
 				testName, tt.subtest, result, tt.result, tt.role, tt.spec)
+		}
+	}
+}
+
+func TestGeneratePodDisruptionBudget(t *testing.T) {
+	tests := []struct {
+		c   *Cluster
+		out policyv1beta1.PodDisruptionBudget
+	}{
+		// With multiple instances.
+		{
+			New(
+				Config{OpConfig: config.Config{Resources: config.Resources{ClusterNameLabel: "cluster-name", PodRoleLabel: "spilo-role"}, PDBNameFormat: "postgres-{cluster}-pdb"}},
+				k8sutil.KubernetesClient{},
+				acidv1.Postgresql{
+					ObjectMeta: metav1.ObjectMeta{Name: "myapp-database", Namespace: "myapp"},
+					Spec:       acidv1.PostgresSpec{TeamID: "myapp", NumberOfInstances: 3}},
+				logger),
+			policyv1beta1.PodDisruptionBudget{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "postgres-myapp-database-pdb",
+					Namespace: "myapp",
+					Labels:    map[string]string{"team": "myapp", "cluster-name": "myapp-database"},
+				},
+				Spec: policyv1beta1.PodDisruptionBudgetSpec{
+					MinAvailable: toIntStr(1),
+					Selector: &metav1.LabelSelector{
+						MatchLabels: map[string]string{"spilo-role": "master", "cluster-name": "myapp-database"},
+					},
+				},
+			},
+		},
+		// With zero instances.
+		{
+			New(
+				Config{OpConfig: config.Config{Resources: config.Resources{ClusterNameLabel: "cluster-name", PodRoleLabel: "spilo-role"}, PDBNameFormat: "postgres-{cluster}-pdb"}},
+				k8sutil.KubernetesClient{},
+				acidv1.Postgresql{
+					ObjectMeta: metav1.ObjectMeta{Name: "myapp-database", Namespace: "myapp"},
+					Spec:       acidv1.PostgresSpec{TeamID: "myapp", NumberOfInstances: 0}},
+				logger),
+			policyv1beta1.PodDisruptionBudget{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "postgres-myapp-database-pdb",
+					Namespace: "myapp",
+					Labels:    map[string]string{"team": "myapp", "cluster-name": "myapp-database"},
+				},
+				Spec: policyv1beta1.PodDisruptionBudgetSpec{
+					MinAvailable: toIntStr(0),
+					Selector: &metav1.LabelSelector{
+						MatchLabels: map[string]string{"spilo-role": "master", "cluster-name": "myapp-database"},
+					},
+				},
+			},
+		},
+		// With PodDisruptionBudget disabled.
+		{
+			New(
+				Config{OpConfig: config.Config{Resources: config.Resources{ClusterNameLabel: "cluster-name", PodRoleLabel: "spilo-role"}, PDBNameFormat: "postgres-{cluster}-pdb", EnablePodDisruptionBudget: util.False()}},
+				k8sutil.KubernetesClient{},
+				acidv1.Postgresql{
+					ObjectMeta: metav1.ObjectMeta{Name: "myapp-database", Namespace: "myapp"},
+					Spec:       acidv1.PostgresSpec{TeamID: "myapp", NumberOfInstances: 3}},
+				logger),
+			policyv1beta1.PodDisruptionBudget{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "postgres-myapp-database-pdb",
+					Namespace: "myapp",
+					Labels:    map[string]string{"team": "myapp", "cluster-name": "myapp-database"},
+				},
+				Spec: policyv1beta1.PodDisruptionBudgetSpec{
+					MinAvailable: toIntStr(0),
+					Selector: &metav1.LabelSelector{
+						MatchLabels: map[string]string{"spilo-role": "master", "cluster-name": "myapp-database"},
+					},
+				},
+			},
+		},
+		// With non-default PDBNameFormat and PodDisruptionBudget explicitly enabled.
+		{
+			New(
+				Config{OpConfig: config.Config{Resources: config.Resources{ClusterNameLabel: "cluster-name", PodRoleLabel: "spilo-role"}, PDBNameFormat: "postgres-{cluster}-databass-budget", EnablePodDisruptionBudget: util.True()}},
+				k8sutil.KubernetesClient{},
+				acidv1.Postgresql{
+					ObjectMeta: metav1.ObjectMeta{Name: "myapp-database", Namespace: "myapp"},
+					Spec:       acidv1.PostgresSpec{TeamID: "myapp", NumberOfInstances: 3}},
+				logger),
+			policyv1beta1.PodDisruptionBudget{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "postgres-myapp-database-databass-budget",
+					Namespace: "myapp",
+					Labels:    map[string]string{"team": "myapp", "cluster-name": "myapp-database"},
+				},
+				Spec: policyv1beta1.PodDisruptionBudgetSpec{
+					MinAvailable: toIntStr(1),
+					Selector: &metav1.LabelSelector{
+						MatchLabels: map[string]string{"spilo-role": "master", "cluster-name": "myapp-database"},
+					},
+				},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		result := tt.c.generatePodDisruptionBudget()
+		if !reflect.DeepEqual(*result, tt.out) {
+			t.Errorf("Expected PodDisruptionBudget: %#v, got %#v", tt.out, *result)
 		}
 	}
 }
@@ -269,6 +378,76 @@ func TestCloneEnv(t *testing.T) {
 			t.Errorf("%s %s: Expected env value %s, have %s instead",
 				testName, tt.subTest, tt.env.Value, env.Value)
 		}
+	}
+}
 
+func TestSecretVolume(t *testing.T) {
+	testName := "TestSecretVolume"
+	tests := []struct {
+		subTest   string
+		podSpec   *v1.PodSpec
+		secretPos int
+	}{
+		{
+			subTest: "empty PodSpec",
+			podSpec: &v1.PodSpec{
+				Volumes: []v1.Volume{},
+				Containers: []v1.Container{
+					{
+						VolumeMounts: []v1.VolumeMount{},
+					},
+				},
+			},
+			secretPos: 0,
+		},
+		{
+			subTest: "non empty PodSpec",
+			podSpec: &v1.PodSpec{
+				Volumes: []v1.Volume{{}},
+				Containers: []v1.Container{
+					{
+						VolumeMounts: []v1.VolumeMount{
+							{
+								Name:      "data",
+								ReadOnly:  false,
+								MountPath: "/data",
+							},
+						},
+					},
+				},
+			},
+			secretPos: 1,
+		},
+	}
+	for _, tt := range tests {
+		additionalSecretMount := "aws-iam-s3-role"
+		additionalSecretMountPath := "/meta/credentials"
+
+		numMounts := len(tt.podSpec.Containers[0].VolumeMounts)
+
+		addSecretVolume(tt.podSpec, additionalSecretMount, additionalSecretMountPath)
+
+		volumeName := tt.podSpec.Volumes[tt.secretPos].Name
+
+		if volumeName != additionalSecretMount {
+			t.Errorf("%s %s: Expected volume %s was not created, have %s instead",
+				testName, tt.subTest, additionalSecretMount, volumeName)
+		}
+
+		for i := range tt.podSpec.Containers {
+			volumeMountName := tt.podSpec.Containers[i].VolumeMounts[tt.secretPos].Name
+
+			if volumeMountName != additionalSecretMount {
+				t.Errorf("%s %s: Expected mount %s was not created, have %s instead",
+					testName, tt.subTest, additionalSecretMount, volumeMountName)
+			}
+		}
+
+		numMountsCheck := len(tt.podSpec.Containers[0].VolumeMounts)
+
+		if numMountsCheck != numMounts+1 {
+			t.Errorf("Unexpected number of VolumeMounts: got %v instead of %v",
+				numMountsCheck, numMounts+1)
+		}
 	}
 }

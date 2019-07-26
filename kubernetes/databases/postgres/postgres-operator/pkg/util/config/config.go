@@ -42,7 +42,7 @@ type Resources struct {
 	NodeReadinessLabel      map[string]string `name:"node_readiness_label" default:""`
 	MaxInstances            int32             `name:"max_instances" default:"-1"`
 	MinInstances            int32             `name:"min_instances" default:"-1"`
-	ShmVolume               bool              `name:"enable_shm_volume" default:"true"`
+	ShmVolume               *bool             `name:"enable_shm_volume" default:"true"`
 }
 
 // Auth describes authentication specific configuration parameters
@@ -85,7 +85,7 @@ type Config struct {
 
 	WatchedNamespace string            `name:"watched_namespace"`    // special values: "*" means 'watch all namespaces', the empty string "" means 'watch a namespace where operator is deployed to'
 	EtcdHost         string            `name:"etcd_host" default:""` // special values: the empty string "" means Patroni will use k8s as a DCS
-	DockerImage      string            `name:"docker_image" default:"registry.opensource.zalan.do/acid/spilo-11:1.5-p7"`
+	DockerImage      string            `name:"docker_image" default:"registry.opensource.zalan.do/acid/spilo-11:1.5-p9"`
 	Sidecars         map[string]string `name:"sidecar_docker_images"`
 	// default name `operator` enables backward compatibility with the older ServiceAccountName field
 	PodServiceAccountName string `name:"pod_service_account_name" default:"operator"`
@@ -98,6 +98,8 @@ type Config struct {
 	WALES3Bucket                           string            `name:"wal_s3_bucket"`
 	LogS3Bucket                            string            `name:"log_s3_bucket"`
 	KubeIAMRole                            string            `name:"kube_iam_role"`
+	AdditionalSecretMount                  string            `name:"additional_secret_mount"`
+	AdditionalSecretMountPath              string            `name:"additional_secret_mount_path" default:"/meta/credentials"`
 	DebugLogging                           bool              `name:"debug_logging" default:"true"`
 	EnableDBAccess                         bool              `name:"enable_database_access" default:"true"`
 	EnableTeamsAPI                         bool              `name:"enable_teams_api" default:"true"`
@@ -110,20 +112,21 @@ type Config struct {
 	EnablePodAntiAffinity                  bool              `name:"enable_pod_antiaffinity" default:"false"`
 	PodAntiAffinityTopologyKey             string            `name:"pod_antiaffinity_topology_key" default:"kubernetes.io/hostname"`
 	// deprecated and kept for backward compatibility
-	EnableLoadBalancer       *bool             `name:"enable_load_balancer"`
-	MasterDNSNameFormat      StringTemplate    `name:"master_dns_name_format" default:"{cluster}.{team}.{hostedzone}"`
-	ReplicaDNSNameFormat     StringTemplate    `name:"replica_dns_name_format" default:"{cluster}-repl.{team}.{hostedzone}"`
-	PDBNameFormat            StringTemplate    `name:"pdb_name_format" default:"postgres-{cluster}-pdb"`
-	Workers                  uint32            `name:"workers" default:"4"`
-	APIPort                  int               `name:"api_port" default:"8080"`
-	RingLogLines             int               `name:"ring_log_lines" default:"100"`
-	ClusterHistoryEntries    int               `name:"cluster_history_entries" default:"1000"`
-	TeamAPIRoleConfiguration map[string]string `name:"team_api_role_configuration" default:"log_statement:all"`
-	PodTerminateGracePeriod  time.Duration     `name:"pod_terminate_grace_period" default:"5m"`
-	PodManagementPolicy      string            `name:"pod_management_policy" default:"ordered_ready"`
-	ProtectedRoles           []string          `name:"protected_role_names" default:"admin"`
-	PostgresSuperuserTeams   []string          `name:"postgres_superuser_teams" default:""`
-	SetMemoryRequestToLimit  bool              `name:"set_memory_request_to_limit" defaults:"false"`
+	EnableLoadBalancer        *bool             `name:"enable_load_balancer"`
+	MasterDNSNameFormat       StringTemplate    `name:"master_dns_name_format" default:"{cluster}.{team}.{hostedzone}"`
+	ReplicaDNSNameFormat      StringTemplate    `name:"replica_dns_name_format" default:"{cluster}-repl.{team}.{hostedzone}"`
+	PDBNameFormat             StringTemplate    `name:"pdb_name_format" default:"postgres-{cluster}-pdb"`
+	EnablePodDisruptionBudget *bool             `name:"enable_pod_disruption_budget" default:"true"`
+	Workers                   uint32            `name:"workers" default:"4"`
+	APIPort                   int               `name:"api_port" default:"8080"`
+	RingLogLines              int               `name:"ring_log_lines" default:"100"`
+	ClusterHistoryEntries     int               `name:"cluster_history_entries" default:"1000"`
+	TeamAPIRoleConfiguration  map[string]string `name:"team_api_role_configuration" default:"log_statement:all"`
+	PodTerminateGracePeriod   time.Duration     `name:"pod_terminate_grace_period" default:"5m"`
+	PodManagementPolicy       string            `name:"pod_management_policy" default:"ordered_ready"`
+	ProtectedRoles            []string          `name:"protected_role_names" default:"admin"`
+	PostgresSuperuserTeams    []string          `name:"postgres_superuser_teams" default:""`
+	SetMemoryRequestToLimit   bool              `name:"set_memory_request_to_limit" default:"false"`
 }
 
 // MustMarshal marshals the config or panics
