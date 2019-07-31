@@ -87,6 +87,8 @@
     --set gateways.istio-egressgateway.enabled=true \
     --set istiocoredns.enabled=true \
     --set prometheus.enabled=false \
+    --set kiali.enabled=true \
+    --set tracing.enabled=true \
   > istio-custom.yaml
   ```
 
