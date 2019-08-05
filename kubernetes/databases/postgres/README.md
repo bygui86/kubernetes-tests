@@ -102,6 +102,10 @@
 `TODO`
 `INFO: Seems to be more complicated than Zalando one`
 
+#### KubeDB
+
+`TODO`
+
 ---
 
 ## Links
@@ -110,4 +114,7 @@
   * https://github.com/zalando/postgres-operator
 * CrunchyData
   * https://github.com/CrunchyData/postgres-operator
-  * https://access.crunchydata.com/documentation/postgres-operator/4.0.0/installation/operator-install/
+  * https://access.crunchydata.com/documentation/postgres-operator/4.0.1/installation/operator-install/
+* KubeDB
+  * https://github.com/kubedb/postgres
+  * https://kubedb.com/docs/0.12.0/guides/postgres/
