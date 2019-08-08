@@ -11,8 +11,9 @@
   ```
 
 2. Restart AlertManager to take new configs
+  `WARN: do not use kubectl scale because interfeering withe Prometheus operator`
   ```
-  kubectl delete pod -l alertmanager=main
+  kubectl delete pods -l alertmanager=main
   ```
 
 3. Deploy a demo rule

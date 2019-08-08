@@ -11,3 +11,9 @@ spec:
       rules:
         - alert: ExampleAlert
           expr: vector(1)
+          for: 10s
+          labels:
+            severity: warning
+          annotations:
+            description: Demo Example Alert description
+            summary: Demo Example Alert summary
