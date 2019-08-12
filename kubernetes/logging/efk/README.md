@@ -1,36 +1,33 @@
 
 # Kubernetes tests - Logging - Elastisearch, Fluentd and Kibana
 
+## Pre-requisites
+
+* cpu: 4
+* memory: 8192
+
+---
+
 ## Instructions
 
 1. Deploy
 	```
-	minikube start --cpus 4 --memory 8192
-
-	kubectl create namespace logging
-
-	kubectl apply -f kubernetes/elastic.yaml -n logging
-	kubectl apply -f kubernetes/kibana.yaml -n logging
-	kubectl apply -f kubernetes/fluentd-rbac.yaml
-	`OPTIONAL` kubectl apply -f kubernetes/fluentd-service.yaml
-	kubectl apply -f kubernetes/fluentd-daemonset.yaml
-
-	kubectl get pods -n kube-system
-	kubectl logs fluentd-* -n kube-system -f
+	kubectl apply -f .
 	```
 
 2. Check connection Fluentd-Elastisearch
+	```
+	kubectl get pods -n kube-system
+	kubectl logs fluentd-* -n kube-system -f
+	```
 	You should see that Fluentd connect to Elasticsearch within the logs:
 	```
 	Connection opened to Elasticsearch cluster => {:host=>"elasticsearch.logging", :port=>9200, :scheme=>"http", :path=>""}
 	```
 
-1. Configure Kibana
+3. Configure Kibana
 	```
-	minikube service list
-		or
-	kubectl get svc --all-namespaces
-	open http://$(minikube ip):*
+	open http://$(minikube ip):$(kubectl get svc -n logging | grep -i kibana | awk '{print $5}' | cut -d ',' -f 1 | sed 's,[0-9]*:,,' | sed 's,/TCP,,')
 	```
 	1. Left menu: "Management"
 	2. Kibana group: "Index Patterns"
@@ -55,7 +52,15 @@
 ---
 
 ## Links
-* [logging-tutorial-1](https://mherman.org/blog/logging-in-kubernetes-with-elasticsearch-Kibana-fluentd/)
-* [logging-tutorial-2](https://vadosware.io/post/better-k8s-monitoring-part-2-adding-logging-with-efkk/)
-* [fluentd-official](https://docs.fluentd.org/v/0.12/articles/kubernetes-fluentd)
-* [monitoring-logging-tutorial](https://medium.com/deepaksood619/ultimate-kubernetes-infrastructure-monitoring-metrics-logs-c7b871d797bd)
+* docs
+  * [fluentd-official](https://docs.fluentd.org/v/0.12/articles/kubernetes-fluentd)
+* tutorials
+  * [logging-tutorial-1](https://mherman.org/blog/logging-in-kubernetes-with-elasticsearch-Kibana-fluentd/)
+  * [logging-tutorial-2](https://vadosware.io/post/better-k8s-monitoring-part-2-adding-logging-with-efkk/)
+  * [monitoring-logging-tutorial](https://medium.com/deepaksood619/ultimate-kubernetes-infrastructure-monitoring-metrics-logs-c7b871d797bd)
+  * [digital-ocean-tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes#step-2-%E2%80%94-creating-the-elasticsearch-statefulset)
+* operator
+  * [official](https://www.elastic.co/elasticsearch-kubernetes)
+* samples
+  * [neogenix](https://github.com/neogenix/k8s-elk)
+  * [giantswarm](https://github.com/giantswarm/kubernetes-elastic-stack)
