@@ -99,8 +99,11 @@
 
 #### CrunchyData
 
+`INFO: Opposite to Zalando, this operator is really poor of automation`
+
+#### Stolon
+
 `TODO`
-`INFO: Seems to be more complicated than Zalando one`
 
 #### KubeDB
 
@@ -115,6 +118,10 @@
 * CrunchyData
   * https://github.com/CrunchyData/postgres-operator
   * https://access.crunchydata.com/documentation/postgres-operator/4.0.1/installation/operator-install/
+* Stolon
+  * https://github.com/sorintlab/stolon
+  * https://github.com/lwolf/stolon-chart
+  * https://blog.lwolf.org/post/how-to-deploy-ha-postgressql-cluster-on-kubernetes/
 * KubeDB
   * https://github.com/kubedb/postgres
   * https://kubedb.com/docs/0.12.0/guides/postgres/
