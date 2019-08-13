@@ -1,0 +1,90 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: weave-scope-app
+  annotations:
+    cloud.weave.works/launcher-info: |-
+      {
+        "original-request": {
+          "url": "/k8s/v1.10/scope.yaml?k8s-version=Q2xpZW50IFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiIxNSIsIEdpdFZlcnNpb246InYxLjE1LjIiLCBHaXRDb21taXQ6ImY2Mjc4MzAwYmViYmI3NTAzMjhhYzE2ZWU2ZGQzYWE3ZDM1NDk1NjgiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDE5LTA4LTA1VDE2OjU0OjM1WiIsIEdvVmVyc2lvbjoiZ28xLjEyLjciLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToiZGFyd2luL2FtZDY0In0KU2VydmVyIFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiIxNSIsIEdpdFZlcnNpb246InYxLjE1LjIiLCBHaXRDb21taXQ6ImY2Mjc4MzAwYmViYmI3NTAzMjhhYzE2ZWU2ZGQzYWE3ZDM1NDk1NjgiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDE5LTA4LTA1VDA5OjE1OjIyWiIsIEdvVmVyc2lvbjoiZ28xLjEyLjUiLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToibGludXgvYW1kNjQifQo=",
+          "date": "Mon Aug 12 2019 09:57:40 GMT+0000 (UTC)"
+        },
+        "email-address": "support@weave.works"
+      }
+  labels:
+    name: weave-scope-app
+    app: weave-scope
+    weave-cloud-component: scope
+    weave-scope-component: app
+  namespace: tools
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        name: weave-scope-app
+        app: weave-scope
+        weave-cloud-component: scope
+        weave-scope-component: app
+    spec:
+      containers:
+        - name: app
+          args:
+            - '--mode=app'
+          command:
+            - /home/weave/scope
+          env: []
+          image: 'docker.io/weaveworks/scope:1.11.4'
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4040
+              protocol: TCP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: weave-scope-cluster-agent
+  annotations:
+    cloud.weave.works/launcher-info: |-
+      {
+        "original-request": {
+          "url": "/k8s/v1.10/scope.yaml?k8s-version=Q2xpZW50IFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiIxNSIsIEdpdFZlcnNpb246InYxLjE1LjIiLCBHaXRDb21taXQ6ImY2Mjc4MzAwYmViYmI3NTAzMjhhYzE2ZWU2ZGQzYWE3ZDM1NDk1NjgiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDE5LTA4LTA1VDE2OjU0OjM1WiIsIEdvVmVyc2lvbjoiZ28xLjEyLjciLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToiZGFyd2luL2FtZDY0In0KU2VydmVyIFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiIxNSIsIEdpdFZlcnNpb246InYxLjE1LjIiLCBHaXRDb21taXQ6ImY2Mjc4MzAwYmViYmI3NTAzMjhhYzE2ZWU2ZGQzYWE3ZDM1NDk1NjgiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDE5LTA4LTA1VDA5OjE1OjIyWiIsIEdvVmVyc2lvbjoiZ28xLjEyLjUiLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToibGludXgvYW1kNjQifQo=",
+          "date": "Mon Aug 12 2019 09:57:40 GMT+0000 (UTC)"
+        },
+        "email-address": "support@weave.works"
+      }
+  labels:
+    name: weave-scope-cluster-agent
+    app: weave-scope
+    weave-cloud-component: scope
+    weave-scope-component: cluster-agent
+  namespace: tools
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        name: weave-scope-cluster-agent
+        app: weave-scope
+        weave-cloud-component: scope
+        weave-scope-component: cluster-agent
+    spec:
+      containers:
+        - name: scope-cluster-agent
+          args:
+            - '--mode=probe'
+            - '--probe-only'
+            - '--probe.kubernetes.role=cluster'
+            - 'weave-scope-app.tools.svc.cluster.local:4040'
+          command:
+            - /home/weave/scope
+          env: []
+          image: 'docker.io/weaveworks/scope:1.11.4'
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      serviceAccountName: weave-scope

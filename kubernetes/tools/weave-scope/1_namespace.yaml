@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tools
+  annotations:
+    cloud.weave.works/version: v1.0.0-224-g4f1d08d

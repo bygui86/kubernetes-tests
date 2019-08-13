@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spekt8
+  namespace: tools
+  labels:
+    app: spekt8
+    group: tools
+spec:
+  selector:
+    app: spekt8
+    group: tools
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP

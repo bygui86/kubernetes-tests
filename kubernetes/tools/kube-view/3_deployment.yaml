@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeview
+  namespace: tools
+  labels:
+    app: kubeview
+    group: tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubeview
+      group: tools
+  template:
+    metadata:
+      labels:
+        app: kubeview
+        group: tools
+    spec:
+      serviceAccountName: kubeview
+      containers:
+        - name: kubeview-containers
+          image: bencuk/kubeview:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              memory: "128M"
+              cpu: "0.1"
