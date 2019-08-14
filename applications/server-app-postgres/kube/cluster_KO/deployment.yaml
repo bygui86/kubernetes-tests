@@ -38,8 +38,6 @@ spec:
                 name: server-app-postgres
             - secretRef:
                 name: server-app-postgres
-            - secretRef:
-                name: postgres.acid-minimal-cluster.credentials
           ports:
             - name: http
               containerPort: 8080

@@ -1,0 +1,21 @@
+# https://istio.io/faq/security/#mysql-with-mtls
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: pg-minimal-cluster-mtls
+spec:
+  targets:
+  - name: pg-minimal-cluster
+  peers:
+  - mtls:
+      mode: STRICT
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: pg-minimal-cluster-mtls
+spec:
+  host: pg-minimal-cluster
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
