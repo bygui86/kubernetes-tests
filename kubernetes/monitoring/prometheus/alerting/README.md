@@ -48,8 +48,10 @@ http --json https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXX
 ---
 
 ## Links
+
 * https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/alerting.md
 * https://prometheus.io/docs/alerting/configuration/
 * https://github.com/strimzi/strimzi-kafka-operator/blob/master/metrics/examples/prometheus/alertmanager-config/alert-manager-config.yaml
 * https://api.slack.com/incoming-webhooks
 * https://medium.com/quiq-blog/better-slack-alerts-from-prometheus-49125c8c672b
+* https://pracucci.com/prometheus-understanding-the-delays-on-alerting.html
