@@ -17,7 +17,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: busybox
-          image: eu.gcr.io/ceiba-test-infrastructure/busybox:latest
+          image: busybox:latest
           imagePullPolicy: Always
           command: ["./storage-filler.sh"]
           resources:

@@ -60,7 +60,7 @@
   * [monitoring-logging-tutorial](https://medium.com/deepaksood619/ultimate-kubernetes-infrastructure-monitoring-metrics-logs-c7b871d797bd)
   * [digital-ocean-tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes#step-2-%E2%80%94-creating-the-elasticsearch-statefulset)
 * operator
-  * [official](https://www.elastic.co/elasticsearch-kubernetes)
+  * [official](https://www.elastic.co/products/elastic-cloud-kubernetes)
 * samples
   * [neogenix](https://github.com/neogenix/k8s-elk)
   * [giantswarm](https://github.com/giantswarm/kubernetes-elastic-stack)

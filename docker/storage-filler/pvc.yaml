@@ -5,7 +5,6 @@ metadata:
   labels:
     app: busybox
 spec:
-  storageClassName: ssd-expandable
   accessModes:
     - ReadWriteOnce
   resources:
